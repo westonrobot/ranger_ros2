@@ -23,44 +23,29 @@ find_package(nav_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
-find_package(controller_manager REQUIRED)
-# find_package(topic_tools REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
+
 find_package(ranger_msgs REQUIRED)
 find_package(ugv_sdk REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 
 include_directories(
   include
-  ${EIGEN3_INCLUDE_DIR}
-)
-
-set(DEPENDENCIES
-  "geometry_msgs"
-  "nav_msgs"
-  "rclcpp"
-  "std_msgs"
-  "tf2"
-  "tf2_ros"
-  "ranger_msgs"
-  "sensor_msgs"
-  "tf2_geometry_msgs"
+  # ${EIGEN3_INCLUDE_DIR}
 )
 
 add_executable(ranger_base_node 
     src/ranger_base_node.cpp
     src/ranger_messenger.cpp)
 
-target_link_libraries(ranger_base_node ugv_sdk ${dependencies})
-ament_target_dependencies(ranger_base_node rclcpp tf2 tf2_ros std_msgs nav_msgs sensor_msgs ranger_msgs ${dependencies})
+target_link_libraries(ranger_base_node ugv_sdk)
+ament_target_dependencies(ranger_base_node rclcpp tf2 tf2_ros std_msgs nav_msgs sensor_msgs ranger_msgs tf2_geometry_msgs)
 
 install(TARGETS ranger_base_node
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}/)
-
-# install(DIRECTORY ascent
-#   DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -80,9 +65,3 @@ ament_package()
 #   ${catkin_INCLUDE_DIRS}
 #   ${EIGEN3_INCLUDE_DIR}
 # )
-
-# add_library(ascent INTERFACE)
-# target_include_directories(ascent INTERFACE
-# 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-# 	$<INSTALL_INTERFACE:include>)
-
