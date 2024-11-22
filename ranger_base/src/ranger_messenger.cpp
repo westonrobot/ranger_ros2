@@ -394,7 +394,7 @@ void RangerROSMessenger::UpdateOdometry(double linear, double angular,
 
 void RangerROSMessenger::TwistCmdCallback(
     geometry_msgs::msg::Twist::SharedPtr msg) {
-  double steer_cmd;
+  double steer_cmd = 0.0;
   double radius;
 
   // analyze Twist msg and switch motion_mode
@@ -489,11 +489,8 @@ double RangerROSMessenger::CalculateSteeringAngle(geometry_msgs::msg::Twist msg,
   radius = linear / angular;
   int k = (msg.angular.z * msg.linear.x) >= 0 ? 1.0 : -1.0;
 
-  double l, w, phi_i, x;
+  double l, phi_i;
   l = robot_params_.wheelbase;
-  w = robot_params_.track;
-  x = sqrt(radius * radius + (l / 2) * (l / 2));
-  // phi_i = atan((l / 2) / (x - w / 2));
   phi_i = atan((l / 2) / radius);
   return k * phi_i;
 }
