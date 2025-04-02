@@ -156,6 +156,9 @@ void RangerROSMessenger::SetupSubscription() {
   battery_state_pub_ = node_->create_publisher<sensor_msgs::msg::BatteryState>(
       "/battery_state", 10);
 
+  rc_state_pub_ = node_->create_publisher<ranger_msgs::msg::RCState>(
+      "/rc_state", 10);
+
   // subscriber
   motion_cmd_sub_ = node_->create_subscription<geometry_msgs::msg::Twist>(
       "/cmd_vel", 5,
@@ -216,6 +219,24 @@ void RangerROSMessenger::PublishStateToROS() {
     motion_msg.motion_mode = state.motion_mode_state.motion_mode;
 
     motion_state_pub_->publish(motion_msg);
+  }
+
+  {
+    ranger_msgs::msg::RCState rc_state_msg;
+
+    rc_state_msg.stick_left_h =   state.rc_state.stick_left_h;
+    rc_state_msg.stick_left_v =   state.rc_state.stick_left_v;
+    rc_state_msg.stick_right_h =   state.rc_state.stick_right_h;
+    rc_state_msg.stick_right_v =   state.rc_state.stick_right_v;
+
+    rc_state_msg.swa = state.rc_state.swa;
+    rc_state_msg.swb = state.rc_state.swb;
+    rc_state_msg.swc = state.rc_state.swc;
+    rc_state_msg.swd = state.rc_state.swd;
+
+    rc_state_msg.var_a = state.rc_state.var_a;
+    
+    rc_state_pub_->publish(rc_state_msg);
   }
 
   // publish actuator state

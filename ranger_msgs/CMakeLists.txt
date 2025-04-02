@@ -23,6 +23,7 @@ set(msg_file
 "msg/MotionState.msg"
 "msg/MotorState.msg"
 "msg/SystemState.msg"
+"msg/RCState.msg"
 )
 
 set(srv_file
